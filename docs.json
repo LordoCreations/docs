@@ -9,19 +9,14 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "installation"
-            ]
-          }
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "installation"
         ]
-      }
+      } 
     ],
     "global": {
       "anchors": [
