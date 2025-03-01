@@ -31,7 +31,8 @@
           "icon": "robot"
         }
       ]
-    }
+    },
+    "nextPrev": true
   },
   "logo": {
     "light": "/logo/light.svg",
