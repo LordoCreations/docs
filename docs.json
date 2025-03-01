@@ -16,7 +16,8 @@
           {
             "group": "Get Started",
             "pages": [
-              "introduction"
+              "introduction",
+              "installation"
             ]
           }
         ]
@@ -25,9 +26,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Official RoadRunner Documentation",
+          "anchor": "RoadRunner Documentation",
           "href": "https://rr.brott.dev/docs",
-          "icon": "book-open-cover"
+          "icon": "bird"
+        },
+        {
+          "anchor": "FTC Documentation",
+          "href": "https://ftc-docs.firstinspires.org/en/latest/",
+          "icon": "robot"
         }
       ]
     }
