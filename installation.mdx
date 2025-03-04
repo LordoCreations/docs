@@ -1,12 +1,14 @@
 ---
 title: "Installation and Quickstart"
-description: "Last Updated Feb 28, 2025"
+description: "Github, Android Studio, Extensions, and More"
 mode: "wide"
 ---
 
 <Tabs>
   <Tab title="Github">
     ## Github
+
+    Github is a software versioning and management tool that enables easy collaboration and code base design.
 
     1. Go to the[ FTC Robot Controller](https://github.com/FIRST-Tech-Challenge/FtcRobotController) and press "Fork"&#x20;
 
@@ -19,6 +21,8 @@ mode: "wide"
 
   <Tab title="Android Studio">
     ## Android Studio
+
+    Android Studio is the recommended IDE for FTC Coding, and uses Gradle to build and boot the entire Robot Controller onto the robot.
 
     1. Go to [Android Studio](https://developer.android.com/studio) and install the latest version for your operating system
 
@@ -45,20 +49,30 @@ mode: "wide"
            </Note>
 
        ![](/images/change_jdk.png)
+
+    7. To boot programs onto the robot, ensure the robot is either connected to the computer via USB cable or wifi using [ADB WiFi](#adb_wifi), ensure "TeamCode" is selected on the top bar and press the "Run" or "Restart" button
+
+       ![](/images/run_androids.png)
+
+       <Info>A disadvantage of using Android Studio to boot code onto the robot is that it can take a long time --- expect times ranging from 30 seconds to 2 minutes</Info>
   </Tab>
 
   <Tab title="ADB WiFi">
-    ## ADB WiFi
+    ## <span id="adb_wifi">ADB WiFi</span>
 
     1. Go to Settings, "Plugins" and search "ADB Wi-Fi" and Install. Once completed, press "OK"
 
        ![](/images/adb_wifi.png)
 
     2. To use ADB WiFi, connect to the robot's WiFi network before selecting the WiFi icon on the right bar and selecting connect to the Robot Controller&#x20;
+
+
        ![](/images/adb_wifi_use.png)
 
-        <Note>
-          Sometimes, you may need to plug in your computer to the Robot Controller before the device can be connected to via WiFi. Additionally, you may also have to do the first install each time you open the app on another WiFi network to download necessary imports and libraries.
-        </Note>
+           <Note>
+             Sometimes, you may need to plug in your computer to the Robot Controller before the device can be connected to via WiFi. Additionally, you may also have to do the first install each time you open the app on another WiFi network to download necessary imports and libraries.
+           </Note>
   </Tab>
+
+  <Tab title="Roadrunner" />
 </Tabs>
