@@ -1,0 +1,45 @@
+---
+title: "Setting Up the Environment"
+description: "Configuring Gradle and Coding Environment"
+---
+
+## Gradle Imports
+
+After opening the project in Android Studio, it will take a bit of time to index and convert to the "Android" Workspace.
+
+Then, select `Gradle Scripts`. This tab is a collection of all the Gradle configuration scripts that are used.&#x20;
+
+![](/images/gradle_loc.png)
+
+Generally, you only edit the `build.grade` in `(Module :TeamCode)`.
+
+<AccordionGroup>
+  <Accordion title="Installing Roadrunner" defaultOpen={true}>
+    To install Roadrunner, which is the autonomous tools library this guide uses, go to `TeamCode/build.gradle` (or `build.gradle (Module :TeamCode)`).
+
+    1. Add between `android` and `dependencies`
+
+       ```grade
+       repositories {
+          maven {
+             url = 'https://maven.brott.dev/'
+          }
+       }
+       ```
+
+    2. Add inside the `dependencies block`
+
+       ```grade
+       implementation "com.acmerobotics.roadrunner:ftc:0.1.15"
+       implementation "com.acmerobotics.roadrunner:core:1.0.1"
+       implementation "com.acmerobotics.roadrunner:actions:1.0.1"
+       implementation "com.acmerobotics.dashboard:dashboard:0.4.16"
+       ```
+  </Accordion>
+</AccordionGroup>
+
+## Folder
+
+![](/images/android_workspace.png)
+
+Select the `TeamCode` folder, then open `java` and `org.firstinspires.ftc.teamcode`. This folder is where all your OpModes will go, and where most of your programming will be done.
