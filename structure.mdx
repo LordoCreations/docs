@@ -1,0 +1,30 @@
+---
+title: "Program Structure"
+description: "How to structure the opmode folder"
+---
+
+## Simple
+
+The easiest way to set up a robot is with two files for opmodes, one for the autonomous period and the other for teleOP.
+
+<CodeGroup>
+
+```java TeleOP.java
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+@TeleOp(name="Basic TeleOp")
+public class TeleOP extends OpMode {
+	/*
+     * Code to run ONCE when the driver hits INIT
+     */
+    @Override
+    public void init() {
+	
+	}
+}
+```
+
+</CodeGroup>

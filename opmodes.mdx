@@ -1,0 +1,95 @@
+---
+title: "Opmodes"
+description: "All about Opmodes"
+---
+
+## What are Opmodes?
+
+An Opmode is code that can be executed on the Robot Controller by using the Driver Station. Opmodes have five segments.
+
+<Info>
+  There are two types of Opmodes, Iterative (`OpMode`) and Linear (`LinearOpMode`). In the former, functions are called for each stage of running the robot, while in the latter all robot code is ran in a single function.
+</Info>
+
+![images/selectTeleOp.png](/images/selectTeleOp.png)
+
+### Initialize
+
+The initialize period called when the INIT button is pressed on the Driver Station. This is only runs once, and is generally used to set variables and configure telemetry and other apps before the robot actually moves.
+
+In an Iterative Opmode, the `init()`  function is called when the initialize button, as shown below.
+
+```java
+public class IterativeOpMode extends OpMode {
+	@Override
+	public void init() {
+		// initialize robot
+	}
+}
+```
+
+<Tip>
+  The `@Override` tag is used to indicate that the function is [overriden](https://www.programiz.com/java-programming/method-overriding) but is not absolutely necessary
+</Tip>
+
+In a Linear Opmode, the `runOpMode()` function is used to run all robot code. As a result, the function is ran automatically and initialization should be done at the start of the function.
+
+```java
+public class LinearOpMode extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+		// initialize robot
+
+		... other functions
+	}
+}
+```
+
+### Initialize Loop
+
+Once the initialize function is completed, a loop can be added that runs repeatedly before the opmode is actually started. Since not many actions require this type of initialization, it is rarely seen in most FTC Opmodes.
+
+In an Iterative Opmode, the `init_loop()`  function is called repeatedly until the START button is pressed.
+
+```java
+public class IterativeOpMode extends OpMode {
+	@Override
+	public void init_loop() {
+		// called continously until the START button is pressed
+	}
+}
+```
+
+In a Linear Opmode, a loop can be added after the robot is initialized to match the functionality of the above.
+
+```java
+public class LinearOpMode extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+		// initialize robot
+
+		while (!isStarted()) {
+			// runs continously until the START button is pressed
+		}
+
+		... other functions
+	}
+}
+```
+
+### Start
+
+Once the start button is pressed, this segment of code is ran once. This is rarely used in TeleOp Opmodes, but most Autonomous actions are performed here.
+
+In an Iterative Opmode, the `start()`  function is called when the START button is pressed.
+
+```java
+public class IterativeOpMode extends OpMode {
+	@Override
+	public void start() {
+		// called once the START button is pressed
+	}
+}
+```
+
+In a Linear Opmode, the 
