@@ -68,7 +68,7 @@ public class LinearOpMode extends LinearOpMode {
     public void runOpMode() {
 		// initialize robot
 
-		while (!isStarted()) {
+		while (opModeInInit()) { // or while (!isStarted())
 			// runs continously until the START button is pressed
 		}
 
@@ -92,4 +92,56 @@ public class IterativeOpMode extends OpMode {
 }
 ```
 
-In a Linear Opmode, the 
+In a Linear Opmode, code after the `waitForStart()`  function is exectuded after the START button is pressed
+
+```java
+public class LinearOpMode extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+		// initialize robot
+
+		waitForStart();
+		// things to do after START
+
+		... other functions
+	}
+}
+```
+
+### Start Loop
+
+Once the start function is completed, opmodes enter a loop which continues until the STOP button is pressed. Most TeleOP actions are performed in this segment.
+
+In an Iterative Opmode, the `loop()`  function runs repeatedly after the `start()` function is completed
+
+```java
+public class IterativeOpMode extends OpMode {
+	@Override
+	public void loop() {
+		// called repeatedly after start() function completes
+	}
+}
+```
+
+In a Linear Opmode, a loop can be added to mimic the functionality of the above.
+
+```java
+public class LinearOpMode extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+		// initialize robot
+
+		waitForStart();
+
+		while (opModeIsActive()) {
+			// runs continously until the STOP button is pressed
+		}
+
+		... other functions
+	}
+}
+```
+
+<Note>
+  In earlier versions of the Robot Controller, there are slight differences in the implementation of this function. See [here](https://gm0.org/en/latest/docs/software/getting-started/linear-opmode-vs-opmode.html) for more details
+</Note>
