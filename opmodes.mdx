@@ -1,6 +1,6 @@
 ---
 title: "Opmodes"
-description: "All about Opmodes"
+description: "All about Opmodes; what they are, differences, etc."
 ---
 
 ## What are Opmodes?
@@ -110,7 +110,7 @@ public class LinearOpMode extends LinearOpMode {
 
 ### Start Loop
 
-Once the start function is completed, opmodes enter a loop which continues until the STOP button is pressed. Most TeleOP actions are performed in this segment.
+Once the start function is completed, opmodes enter a loop which continues until the STOP button is pressed. Most TeleOP actions are performed in this segment. Note that there is a small delay between each time the loop is called. 
 
 In an Iterative Opmode, the `loop()`  function runs repeatedly after the `start()` function is completed
 
@@ -145,3 +145,35 @@ public class LinearOpMode extends LinearOpMode {
 <Note>
   In earlier versions of the Robot Controller, there are slight differences in the implementation of this function. See [here](https://gm0.org/en/latest/docs/software/getting-started/linear-opmode-vs-opmode.html) for more details
 </Note>
+
+### Stop
+
+Once the STOP button is pressed, this segment of code is ran to conclude any actions during the Opmode. This is generally not used since motors and other FTC-designed tools are automatically stopped.
+
+In an Iterative Opmode, `stop()` is called when the STOP button is pressed
+
+```java
+public class IterativeOpMode extends OpMode {
+	@Override
+	public void stop() {
+		// called after STOP button pressed
+	}
+}
+```
+
+In a Linear Opmode, a loop checking `isStopRequested()`  can be used to simulate the above function.
+
+```java
+public class LinearOpMode extends LinearOpMode {
+    @Override
+    public void runOpMode() {
+		// initialize robot
+
+		waitForStart();
+
+		while (!istStopRequested()) {} // wait
+
+		// code after STOP button pressed
+	}
+}
+```
