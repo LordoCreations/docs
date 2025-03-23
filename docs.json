@@ -17,7 +17,14 @@
           "installation",
           "setup"
         ]
-      } 
+      },
+      {
+        "group": "Basics",
+        "pages": [
+          "opmodes",
+          "structure"
+        ]
+      }
     ],
     "global": {
       "anchors": [
