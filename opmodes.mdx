@@ -212,10 +212,11 @@ Telemetry can be used to display various information on the Driver Station (bott
 
 ![Ds Pn](/images/ds.png)
 
-Generally, data can be added using the `telemetry.addData()`  function, with a name and value. Telemetry is updated on the console with the `telemetry.update()` . 
+Generally, data can be added using the `telemetry.addData()`  function, with a name and value. Telemetry is updated on the console with the `telemetry.update()` . In addition, `telemetry.addLine()` can be used to add a single string the console.
 
 ```java
 telemetry.addData("hello", "world");
+telemetry.addLine("hello world");
 telemetry.update();
 ```
 
@@ -228,3 +229,7 @@ telemetry.update();
 </Info>
 
 For more information, click [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/org/firstinspires/ftc/robotcore/external/Telemetry.html)
+
+### Others
+
+Opmodes can also provide access to time, but for this guide's purposes this will be omitted. For more information, click [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/eventloop/opmode/OpMode.html) for `OpMode` documentation and [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/eventloop/opmode/LinearOpMode.html) for `LinearOpMode` documentation
