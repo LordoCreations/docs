@@ -5,7 +5,7 @@ description: "All about Opmodes; what they are, differences, etc."
 
 ## What are Opmodes?
 
-An Opmode is code that can be executed on the Robot Controller by using the Driver Station. Opmodes have five segments.
+An Opmode is code that can be executed on the Robot Controller by using the Driver Station. They are executed in phases, from the pressing of the INIT button, to START, to STOP.
 
 <Info>
   There are two types of Opmodes, Iterative (`OpMode`) and Linear (`LinearOpMode`). In the former, functions are called for each stage of running the robot, while in the latter all robot code is ran in a single function.
@@ -110,7 +110,7 @@ public class LinearOpMode extends LinearOpMode {
 
 ### Start Loop
 
-Once the start function is completed, opmodes enter a loop which continues until the STOP button is pressed. Most TeleOP actions are performed in this segment. Note that there is a small delay between each time the loop is called. 
+Once the start function is completed, opmodes enter a loop which continues until the STOP button is pressed. Most TeleOP actions are performed in this segment. Note that there is a small delay between each time the loop is called.
 
 In an Iterative Opmode, the `loop()`  function runs repeatedly after the `start()` function is completed
 
@@ -177,3 +177,54 @@ public class LinearOpMode extends LinearOpMode {
 	}
 }
 ```
+
+## Additional Functionality
+
+In addition to providing control periods for the robot, Opmodes also provide other useful things, like access to gamepad input.
+
+<Tip>
+  Linear Opmodes (`LinearOpMode`) inherit from Iterative Opmodes (`OpMode`), so all of the following examples will use `OpMode`. Unless noted, the behavior from a Linear Opmode should be the same.
+</Tip>
+
+### Gamepads
+
+In the FTC, robots are controlled with gamepads. Since up to two gamepads can be connected to a Driver Station, they are called `gamepad1`  and  `gamepad2` .
+
+For more information, click [here](https://gm0.org/en/latest/docs/software/tutorials/gamepad.html)
+
+### Hardware Mapping
+
+Once the robot hardware is [configured](https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/index.html),  each component connect is assigned a name. The `hardwareMap`  variable can be accessed to connect the physical component with the opmode.
+
+Generally, the format to connect a component is by setting the variable to `hardwareMap.get(variable.class, "name of component")` . For example, setting a motor configured as "motorTest" would be done like below.
+
+![Motor Config Pn](/images/motor_config.png)
+
+```java
+DcMotor motorTest = hardwareMap.get(DcMotor.class, "motorTest");
+```
+
+For more information, click [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/HardwareMap.html)
+
+### Telemetry
+
+Telemetry can be used to display various information on the Driver Station (bottom right box), generally for debugging purposes. This is provided in Opmodes by the `telemetry`  variable.
+
+![Ds Pn](/images/ds.png)
+
+Generally, data can be added using the `telemetry.addData()`  function, with a name and value. Telemetry is updated on the console with the `telemetry.update()` . 
+
+```java
+telemetry.addData("hello", "world");
+telemetry.update();
+```
+
+<Info>
+  Note that addData can also use a [formatted string](https://www.w3schools.com/java/ref_string_format.asp).
+
+  ```java
+  telemetry.addData("time", "%.2f", elapsedTime);
+  ```
+</Info>
+
+For more information, click [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/org/firstinspires/ftc/robotcore/external/Telemetry.html)

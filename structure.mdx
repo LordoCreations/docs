@@ -5,7 +5,7 @@ description: "How to structure the opmode folder"
 
 ## Simple
 
-The easiest way to set up a robot is with two files for opmodes, one for the autonomous period and the other for teleOP.
+The easiest way to set up a robot is with two files for opmodes, one for the autonomous period and the other for teleOP. Generally, the autonomous opmode will be a `LinearOpMode` due to actions being performed only once, but the teleOP period is more flexible. Generally, an Iterative Opmode is easier to use but many guides (like [Game Manual 0](https://gm0.org)) prefer to use `LinearOpMode` .
 
 <CodeGroup>
 
@@ -16,15 +16,51 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @TeleOp(name="Basic TeleOp")
+public class TeleOP extends OpMode {}
+```
+
+
+```java Auton.java
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@Autonomous(name="Basic Auton")
+public class Auton extends LinearOpMode {}
+```
+
+</CodeGroup>
+
+Generally, most robot components (ie. Motors, Servos) are defined outside of functions, and set in the initialize phase.
+
+<CodeGroup>
+
+```java TeleOP.java
 public class TeleOP extends OpMode {
-	/*
-     * Code to run ONCE when the driver hits INIT
-     */
-    @Override
-    public void init() {
-	
+	public static DcMotor motor;
+
+	@Override
+	public void init() {
+		motor = hardwareMap.get(DcMotor.class, "motor");
+	}
+}
+```
+
+
+```java Auton.java
+public class Auton extends LinearOpMode {
+	public static DcMotor motor;
+
+	@Override
+	public void runOpMode() {
+		motor = hardwareMap.get(DcMotor.class, "motor");
+
+		waitForStart();
 	}
 }
 ```
 
 </CodeGroup>
+
+Opm
