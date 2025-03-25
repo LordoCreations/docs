@@ -1,0 +1,58 @@
+---
+title: "Best Practices"
+description: "What to do while programming for FTC"
+---
+
+## Importance
+
+While most FTC programs are not super complex, it is still best to follow best practices when coding. These allow programs to be more easily understandable and maintainable, which is especially important since robot code can often be passed on for a long time between different maintainers and are generally worked on by a team.
+
+## Commenting
+
+Commenting code enables much greater readability, and makes understanding code much easier. However, it should be noted that commenting should only be done where necessary to avoid cluttering.
+
+```java
+Thread.sleep(1000) // this is a comment
+
+/*
+this is a
+multi-
+line
+comment
+*/
+```
+
+### Javadoc Commenting
+
+Javadoc is a tool that enables automatic documentation generation and is attached to files and methods. It uses special [tags](https://www.oracle.com/ca-en/technical-resources/articles/java/javadoc-tool.html) and HTML to format, so links can also be embedded.
+
+```java
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+/**
+Holds all common code between Autonomous and TeleOP Opmodes
+**/
+
+public class Common {
+    public static DcMotor frontLeft;
+    public static DcMotor backLeft;
+    public static DcMotor frontRight;
+    public static DcMotor backRight;
+
+	/**
+	Initialize components with hardware map
+	@param hardwareMap hardware map from opmode
+	**/
+	public static initialize(HardwareMap hardwareMap) {
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+	}
+}
+```
+
+### S
