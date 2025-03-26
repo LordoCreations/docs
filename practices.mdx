@@ -28,11 +28,11 @@ Javadoc is a tool that enables automatic documentation generation and is attache
 
 ```java
 /**
-Example method that shifts all characters in a string by a certain amount
-@param a amount to shift string by
-@param b string to shift
-@return shifted string
-**/
+ * Example method that shifts all characters in a string by a certain amount
+ * @param a amount to shift string by
+ * @param b string to shift
+ * @return shifted string
+ */
 private static String example(int a, String b) {
 	String res = "";
 	for (char c : b.toCharArray()) res += (char)(c + a);
@@ -47,8 +47,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
-Holds all common code between Autonomous and TeleOP Opmodes
-**/
+ * Holds all common code between Autonomous and TeleOP Opmodes
+ */
 
 public class Common {
     public static DcMotor frontLeft;
@@ -57,9 +57,9 @@ public class Common {
     public static DcMotor backRight;
 
 	/**
-	Initialize components with hardware map
-	@param hardwareMap hardware map from opmode
-	**/
+	 * Initialize components with hardware map
+	 * @param hardwareMap hardware map from opmode
+	 */
 	public static initialize(HardwareMap hardwareMap) {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
