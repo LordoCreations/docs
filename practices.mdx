@@ -69,4 +69,10 @@ public class Common {
 }
 ```
 
-## Timing
+## Avoid Duplication
+
+Many components of the robot are used many times in various opmodes, and this can often result in long segments of duplicate or similar code. Instead, try to merge copied functionality into common files or classes.
+
+For example, instead of setting motors in a drivetrain both in a TeleOP and Auton opmode, a common file with all motor initialization could be [created](https://mdssrobotics.mintlify.app/structure).
+
+## Keep Relevant Things Together
