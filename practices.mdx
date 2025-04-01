@@ -75,4 +75,42 @@ Many components of the robot are used many times in various opmodes, and this ca
 
 For example, instead of setting motors in a drivetrain both in a TeleOP and Auton opmode, a common file with all motor initialization could be [created](https://mdssrobotics.mintlify.app/structure).
 
-## Keep Relevant Things Together
+## Keep Relevant Things Together (Encapsulation)
+
+Java, is one of the most widely used OOP ([object-oriented programming](https://www.w3schools.com/java/java_oop.asp)) languages, and through the use of various classes complex functions can be simplified and code longevity can be increased.
+
+This is especially beneficial when using Roadrunner, as it provides classes like `Action`  which greatly simplify [parallel autonomous execution](https://rr.brott.dev/docs/v1-0/actions/) and can serve as a base plate for TeleOP actions as well.
+
+For example, since most robots include one or several linear slides, a class called `Slide`  can be created that contains both Autonomous and TeleOp functions like below
+
+```java
+public class Slide{
+    private DcMotorEx motor;
+
+    public Shooter(HardwareMap hardwareMap, String name) {
+        motor = hardwareMap.get(DcMotorEx.class, name);
+    }
+
+    public class SlideUp implements Action { // allows parallel autonomous execution
+        private boolean initialized = false;
+		public int dest = 1000;
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            if (!initialized) {
+                motor.setTargetPosition(dest);
+        		motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                initialized = true;
+            }
+
+            double pos = motor.getCurrentPosition();
+            packet.put("Arm Position", pos);
+            return pos < dest;
+        }
+    }
+
+    public Action slideUp() {
+        return new SlideUp();
+    }
+}
+```
