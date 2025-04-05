@@ -105,12 +105,18 @@ public class Slide{
 
             double pos = motor.getCurrentPosition();
             packet.put("Arm Position", pos);
-            return pos < dest;
+            return pos - dest > 5;
         }
     }
+
+	public void moveArm(double input) { // allows tele operated action
+		motor.setPower(input);
+	}
 
     public Action slideUp() {
         return new SlideUp();
     }
 }
 ```
+
+While the above is a greatly simplified version of what would actually be incorporated in a class like the above, the principle of putting relevant component together allows much greater sustainability and readability.
