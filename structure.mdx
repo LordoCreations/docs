@@ -193,3 +193,47 @@ public class Auton extends LinearOpMode {
 ```
 
 </CodeGroup>
+
+## Complex
+
+As more components are added to the robot, it may be beneficial to create seperate folders were reusable component classes are located. An example folder structure could be:
+
+```java
+package org.firstinspires.ftc.teamcode
+
+└ opmodes
+    └ TeleOp.java
+    └ autonomous
+        └ BlueLeft.java, BlueRight.java, RedLeft.java, RedRight.java
+└ components
+    └ hardware
+        └ Drivetrain.java, Claw.java, Arm.java, Wrist.java
+    └ software
+        └ Camera.java
+    └ utility
+        └ Gamepad.java, States.java
+```
+
+For further enhancement, a common/template class for all autonomous code that is inherited by all four autonomous opmodes.
+
+For example,
+
+```java
+public class AutonTemplate extends LinearOpmode {
+	protected void configure(boolean blue, boolean left) {
+		/* configure opmode based on position*/
+	}
+
+	// common opmode code
+}
+
+public class BlueLeft extends AutonTemplate {
+	@Override
+	public void runOpMode() {
+		super.configure(true, true);
+
+		// further actions, ie.
+		super.runOpMode();
+	}
+}
+```
