@@ -22,7 +22,14 @@
         "group": "Basics",
         "pages": [
           "opmodes",
-          "structure"
+          "structure",
+          "practices"
+        ]
+      },
+      {
+        "group": "Utility Components",
+        "pages": [
+          "utility_components/gamepad"
         ]
       }
     ],
