@@ -29,7 +29,10 @@
       {
         "group": "Utility Components",
         "pages": [
-          "utility_components/gamepad"
+          "utility_components/utility",
+          "utility_components/gamepad",
+          "utility_components/camera"
+
         ]
       }
     ],
