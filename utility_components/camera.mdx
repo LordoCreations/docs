@@ -1,5 +1,30 @@
 ---
-title: 'New file'
-description: 'Description of your new file.'
+title: "Camera"
+description: "Computer Vision for FTC"
 ---
 
+## What is Computer Vision?
+
+[Computer Vision](https://en.wikipedia.org/wiki/Computer_vision), or CV, is the use of various computer algorithms to process data from a vision sensor, which is often a camera in FTC.
+
+To connect a webcam to the robot, follow [this tutorial](https://ftc-docs.firstinspires.org/en/latest/hardware_and_software_configuration/configuring/configuring_external_webcam/configuring-external-webcam.html).
+
+## Programming with Vision Portal
+
+Recently, the FTC Robot Controller has incorporated the FTC VisionPortal, which combines functionality from older [EasyOpenCV](https://github.com/OpenFTC/EasyOpenCV) and AprilTag libaries.
+
+### EasyOpenCV
+
+**EasyOpenCV** is a vision tool that utilizes [OpenCV](https://opencv.org) to detect various phenomena from camera vision. For example, in FTC 2022-23 Season [Powerplay](https://www.youtube.com/watch?v=HsitvZ0JaDc), three sides of a cone needed to be recognized in order to choose where the robot needed to park. 
+
+Many teams used a three coloured cones as below, and used EasyOpenCV to recognize them.
+
+![Powerplay Sleeve Pn](/images/powerplay_sleeve.png)
+
+While VisionPortal was not in the FTC Robot Controller during this season, similar functionality could be created using the library.
+
+For example
+
+## More CV Resources
+
+The official documentation for the FTC Robot Controller Vision Portal can be found [here](https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/visionportal_overview/visionportal-overview.html).
