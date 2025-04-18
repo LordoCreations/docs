@@ -68,7 +68,7 @@ public class ExampleOpMode extends LinearOpMode {
 In addition to simplifying code, this utility class could also make adjusting how inputs work more simple.  For example, a method could be implemented to square inputs, resuling in better micromovement control while still enabling fast movements.
 
 ```java
-public float[] getSquaredStickInputs() {
+public float[] getStickInputs() {
         float[] inputs = {gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y};
 		for (int i = 0; i < inputs.length; i++) 
 			inputs[i] = (inputs[i] < 0 ? -1 : 1) * Math.pow(inputs[i], 2);
@@ -77,5 +77,39 @@ public float[] getSquaredStickInputs() {
 }
 ```
 
-<img className="block dark:hidden" src="/images/light_curve.png" />
-<img className="hidden dark:block" src="/images/dark_curve.png" />
+<img
+  className="block dark:hidden"
+  src="/images/light_curve.png"
+/>
+
+<img
+  className="hidden dark:block"
+  src="/images/dark_curve.png"
+/>
+
+(Fig. shows how input, input squared and flipped for negatives, and input cubed results in translation of input to output)
+
+Other functionality could include fixing stick drift, as implemented below
+
+```java
+
+public class GamepadEx {
+	private Gamepad gamepad;
+    private float[] stickCorrection = new float[4];
+
+	public float[] getStickInputs() {
+        return new float[] {gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y};
+    }
+
+	public float[] getCorrectedStickInputs() {
+        float[] inputs = getStickInputs();
+		for (int i = 0; i < inputs.length; i++) inputs[i] += stickCorrection[i];
+		
+		return inputs;
+    }
+
+	public void zeroSticks() {
+		stickCorrection = getStickInputs();
+	}
+} 
+```
