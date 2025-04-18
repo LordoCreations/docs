@@ -102,9 +102,9 @@ public class VisionPortalAprilTagLocalization extends LinearOpMode {
                         detection.robotPose.getPosition().y,
                         detection.robotPose.getPosition().z));
                 	telemetry.addLine(String.format("Pitch %6.1f\n Roll %6.1f\n Yaw %6.1f (deg)",
-					detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
-detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
-detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
+						detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
+					detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
+					detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
             	} else {
                 	telemetry.addLine(String.format("\n---> (ID %d) Unknown", detection.id));
                 	telemetry.addLine(String.format("Center %6.0f %6.0f   (px)", detection.center.x, detection.center.y));
@@ -114,6 +114,8 @@ detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
 	}
 }
 ```
+
+For more information about April Tags, see the [wiki](https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/apriltag_intro/apriltag-intro.html) or [Javadoc](https://javadoc.io/doc/org.firstinspires.ftc/Vision/latest/org/firstinspires/ftc/vision/apriltag/package-summary.html).
 
 ## More CV Resources
 
