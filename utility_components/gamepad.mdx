@@ -1,4 +1,81 @@
 ---
 title: "Gamepad"
-description: "Description of your new file."
+description: "Gamepad Utility Class"
 ---
+
+While the Gamepad class provided by FTC does have most necessary functionality, it can often be beneficial to include some additional functionality.
+
+For example, a utility class `GamepadEx`  could be written as below
+
+```java
+package org.firstinspires.ftc.teamcode.utility;
+
+// imports
+
+public class GamepadEx {
+	private Gamepad gamepad;
+
+	public GamepadEx(Gamepad gamepad) {
+		this.gamepad = gamepad;
+	}
+
+	public float[] getStickInputs() {
+        return new float[] {gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y};
+    }
+} 
+```
+
+and implemented in an opmode
+
+```java
+package org.firstinspires.ftc.teamcode.opmodes;
+
+// other imports
+
+import org.firstinspires.ftc.teamcode.utility.GamepadEx;
+
+public class ExampleOpMode extends LinearOpMode {
+	public void runOpMode() {
+		GamepadEx gamepad_left = new GamepadEx(gamepad1);
+		DcMotor example_motors[] = new DcMotor[8];
+
+		for (int i = 0; i < example_motors[].length; i++)
+			example_motors[i] = hardwareMap.get(DcMotor.class, "motor_" + i);
+		
+		waitForStart();
+
+		while (opModeIsActive()) {
+			// old
+			for (int j = 0; j < example_motors[].length; j++) {
+				double power;
+				switch (j%4) {
+					case 0: power = gamepad1.left_stick_x; break;
+					case 0: power = gamepad1.left_stick_y; break;
+					case 0: power = gamepad1.right_stick_x; break;
+					default: power = gamepad1.right_stick_y;
+				}
+				example_motors[j].setPower(power);
+			}
+
+			// new
+			for (int k = 0; k < example_motors[].length; k++) 
+				example_motors[j].setPower(GamepadEx.getStickInputs()[j%4]);
+		}
+	}
+}
+```
+
+In addition to simplifying code, this utility class could also make adjusting how inputs work more simple.  For example, a method could be implemented to square inputs, resuling in better micromovement control while still enabling fast movements.
+
+```java
+public float[] getSquaredStickInputs() {
+        float[] inputs = {gamepad.left_stick_x, gamepad.left_stick_y, gamepad.right_stick_x, gamepad.right_stick_y};
+		for (int i = 0; i < inputs.length; i++) 
+			inputs[i] = (inputs[i] < 0 ? -1 : 1) * Math.pow(inputs[i], 2);
+		
+		return inputs;
+}
+```
+
+<img className="block h-32 dark:hidden" src="/images/light_curve.png" />
+<img className="hidden h-32 dark:block" src="/images/dark_curve.png" />
