@@ -17,6 +17,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class MotorGroup {
     private final ArrayList<DcMotorEx> motors;
@@ -197,6 +198,7 @@ The four above constructors allow a few different ways of creating a motor group
 3. Takes a HardwareMap from the opmode and uses it to fetch motors with a prefix and array of suffixes
 
    ```java
+   // creates motors motor_a, motor_b, motor_c
    MotorGroup m = new MotorGroup(hardwareMap, "motor", new String[] {"a", "b", "c"});
    ```
 
@@ -213,3 +215,136 @@ The four above constructors allow a few different ways of creating a motor group
    ```java
    MotorGroup m = new MotorGroup(hardwareMap, new String[] {"alpha", "beta", "gamma"});
    ```
+
+### Motor ArrayList Modifiers
+
+```java
+public void add(DcMotorEx motor) {
+    motors.add(motor);
+}
+
+public void add(int index, DcMotorEx motor) {
+    motors.add(index, motor);
+}
+
+public void remove(int index) {
+    motors.remove(index);
+}
+
+public DcMotorEx get(int index) {
+    return motors.get(index);
+}
+
+public int size() {
+    return motors.size();
+}
+```
+
+These methods are the same as their Arraylist counterparts, and are included instead of simply extending ArrayList to prevent other possible problems.
+
+### Interfaces
+
+This code relies on interfaces to execute various functions. These convert parameters and [method references](https://www.geeksforgeeks.org/method-references-in-java-with-examples/) to be passed into the class to be executed.
+
+```java
+public interface MotorAction1<T> {
+    void apply(DcMotorEx motor, T param);
+}
+
+public interface MotorAction2<T, U> {
+    void apply(DcMotorEx motor, T p1, U p2);
+}
+
+public interface MotorFunction1<T, R> {
+    R apply(DcMotorEx motor, T param);
+}
+
+public interface MotorFunction0<R> {
+    R apply(DcMotorEx motor);
+}
+```
+
+<Info>
+  The letters, T, U, and R represent the classes of the first two parameters and the type of the return class.
+</Info>
+
+1. Takes 1 parameter (ie. `motor.setPower(double power)`)
+2. Takes 2 parameters (ie. `setPIDCoefficients(DcMotor.RunMode mode,  PIDCoefficients pidCoefficients`)
+3. Takes 1 parameter and returns something (ie. `getPIDFCoefficients(DcMotor.RunMode mode)`)
+4. Returns something (ie. `motor.getPower()`)
+
+While there are other functions with a different number of parameters, these are generally rarely executed. If desired, they can be set for each motor before being passed into a MotorGroup object.
+
+### Running methods
+
+To run methods, a `run()` function has been overloaded to accept functions described above. 
+
+```java
+// One param void
+public <T> void run(MotorAction1<T> action, T[] paramArray) {
+    for (int i = 0; i < motors.size(); i++) {
+        action.apply(motors.get(i), paramArray[i % paramArray.length]);
+    }
+}
+
+// Two params void
+public <T, U> void run(MotorAction2<T, U> action, T[] p1Array, U[] p2Array) {
+    for (int i = 0; i < motors.size(); i++) {
+        T p1 = p1Array[i % p1Array.length];
+        U p2 = p2Array[i % p2Array.length];
+        action.apply(motors.get(i), p1, p2);
+    }
+}
+
+// One param return
+public <T, R> R[] run(MotorFunction1<T, R> function, T[] paramArray, Class<R> resultClass) {
+    @SuppressWarnings("unchecked")
+    R[] results = (R[]) Array.newInstance(resultClass, motors.size());
+    for (int i = 0; i < motors.size(); i++) {
+        results[i] = function.apply(motors.get(i), paramArray[i % paramArray.length]);
+    }
+    return results;
+}
+
+// Zero param return
+public <R> R[] run(MotorFunction0<R> function, Class<R> resultClass) {
+    @SuppressWarnings("unchecked")
+    R[] results = (R[]) Array.newInstance(resultClass, motors.size());
+    for (int i = 0; i < motors.size(); i++) {
+        results[i] = function.apply(motors.get(i));
+    }
+    return results;
+}
+
+// One param, no mapping (e.g., lambda version)
+public void run(Consumer<DcMotorEx> action) {
+    for (DcMotorEx motor : motors) {
+        action.accept(motor);
+    }
+}
+```
+
+In the first four, all parameters are passed in as arrays, with each element being passed to the motor of the same index. If there are more motors than elements in each parameter array, the parameter loops over to the start.
+
+```java
+group.run(DcMotorEx::setPower, new Double[]{0.5, -0.5});
+```
+
+For the ones that return something, an array of the result class is created, and the result of each function is stored within the array.
+
+```java
+Double[] powers = group.run(DcMotorEx::getPower, Double.class);
+```
+
+The last function is executed slightly differently, with all motors being called with the same [lamda function](https://www.w3schools.com/java/java_lambda.asp).
+
+```java
+// single line
+group.run(m -> m.setPower(0.3));
+
+// multi line
+group.run(m -> {
+    m.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    m.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+});
+```
