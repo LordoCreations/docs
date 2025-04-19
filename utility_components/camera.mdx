@@ -103,8 +103,8 @@ public class VisionPortalAprilTagLocalization extends LinearOpMode {
                         detection.robotPose.getPosition().z));
                 	telemetry.addLine(String.format("Pitch %6.1f\n Roll %6.1f\n Yaw %6.1f (deg)",
 						detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
-					detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
-					detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
+						detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
+						detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
             	} else {
                 	telemetry.addLine(String.format("\n---> (ID %d) Unknown", detection.id));
                 	telemetry.addLine(String.format("Center %6.0f %6.0f   (px)", detection.center.x, detection.center.y));
