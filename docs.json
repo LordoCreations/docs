@@ -31,8 +31,8 @@
         "pages": [
           "utility_components/utility",
           "utility_components/gamepad",
-          "utility_components/camera"
-
+          "utility_components/camera",
+          "utility_components/motor_group"
         ]
       }
     ],
@@ -47,6 +47,11 @@
           "anchor": "FTC Documentation",
           "href": "https://ftc-docs.firstinspires.org/en/latest/",
           "icon": "robot"
+        },
+        {
+          "anchor": "FTC JavaDoc",
+          "href": "https://javadoc.io/doc/org.firstinspires.ftc",
+          "icon": "book"
         }
       ]
     }
