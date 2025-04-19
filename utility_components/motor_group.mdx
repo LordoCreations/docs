@@ -177,10 +177,39 @@ The four above constructors allow a few different ways of creating a motor group
    ```java
    ArrayList<DcMotorEx> motors = new ArrayList<>();
    motors.add(hardwareMap.get(DcMotorEx.class, "motor_0"))
-   motors.add(hardwareMap.get(DcMotorEx.class, ""))
+   motors.add(hardwareMap.get(DcMotorEx.class, "motor_1"))
    
    MotorGroup m = new MotorGroup(motors);
+   
+   motors.add(hardwareMap.get(DcMotorEx.class, "motor_2")) // still adds another motor
    ```
 2. Takes an array of DcMotorEx and converts it into an ArrayList
+
+   ```java
+   DcMotorEx motor_0 = hardwareMap.get(DcMotorEx.class, "motor_0");
+   DcMotorEx motor_1 = hardwareMap.get(DcMotorEx.class, "motor_1")
+   MotorGroup m = new MotorGroup(new DcMotorEx[] {motor_0, motor_1});
+   ```
+
+   <Warning>
+     Once you pass the array into the MotorGroup object, modifying it will **not** modify the content of the MotorGroup
+   </Warning>
 3. Takes a HardwareMap from the opmode and uses it to fetch motors with a prefix and array of suffixes
-4. 
+
+   ```java
+   MotorGroup m = new MotorGroup(hardwareMap, "motor", new String[] {"a", "b", "c"});
+   ```
+
+   <Tip>
+     While not recommended if you repeatedly doing this (make a **seperate** constructor instead), if the suffixes are simply incrementing numbers (ie. 1-4 or 0-7), the following function can be used to generate the suffixes array
+
+     ```java
+     // creates new String[]{"0", "1", "2", "3"}
+     IntStream.range(0, 4).mapToObj(Integer::toString).toArray(String[]::new);
+     ```
+   </Tip>
+4. Takes a HardwareMap from the opmode and uses it to fetch motors with an array of names
+
+   ```java
+   MotorGroup m = new MotorGroup(hardwareMap, new String[] {"alpha", "beta", "gamma"});
+   ```
