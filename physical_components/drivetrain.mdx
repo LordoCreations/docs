@@ -1,0 +1,115 @@
+---
+title: "Drivetrain"
+description: "FTC drivetrains"
+---
+
+All FTC robots need a drivetrain, or something that moves the robot around. There are a few common forms of drivetrains seen in the FTC.
+
+## Tank Drive
+
+The most basic form of drivetrain commonly seen in the FTC is the tank drive, which consists of four wheels. Generally, all four are powered but it is possible to only power the front two wheels. Alternatively, robots may have six or eight wheels, but generally the maximum amount of motors alloted to a drivetrain is four.
+
+![Tank Drive Jp](/images/tank_drive.jpg)
+
+The programming of these drives is also relatively simple:
+
+```java
+MotorGroup group; // have motors alternating left side/right side
+
+@Override
+public void init() {
+	// initialize motor groups
+
+	group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARDS, DcMotorSimple.Direction.REVERSE})
+}
+
+@Override
+public void loop() {
+
+	// drive with left stick
+	Double[] power = new Double[2];
+	power[0] = Math.max(-gamepad1.left_stick_y + gamepad1.left_stick_x, 1);
+	power[1] = Math.max(-gamepad1.left_stick_y - gamepad1.left_stick_x, 1);
+
+	group.run(DcMotorEx::setPower, power)
+}
+```
+
+For more information, see [Game Manual 0](https://gm0.org/en/latest/docs/common-mechanisms/drivetrains/tank.html).
+
+## Holonomic/Mecanum Drive
+
+While a tank drive is relatively to code and built, it lacks many important functionalities that hamper its performance in the FTC. For example, a tank drive is unable to strafe, or move horizontally without turning. Due to the high density of FTC fields, this makes navigation and steering difficult and can greatly limit a robot's performance. Instead, most FTC robots use Mecanum wheels, which basically make it so when a wheel moves, the robot is pushed at a 45° diagonal instead of moving parallel to the wheel. As a result, this allows robots to move and strafe in a 360° circle, enabling greater movement freedom.
+
+![Mecanum Drive Web](/images/mecanum_drive.webp)
+
+Furthermore, holonomic/mecanum drives often enjoy greater degree of software support, by libraries such as [Roadrunner](https://rr.brott.dev/docs/v1-0) or [FTCLib](https://docs.ftclib.org/ftclib).
+
+To program this, a bit of math is used.
+
+```java
+public class TeleOpDrive {
+    MotorGroup group;
+
+    public TeleOpDrive(HardwareMap hardwareMap) {
+    	// initialize motor group in order left-front, right-front, left-back, right-back
+		
+		group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARDS, DcMotorSimple.Direction.REVERSE})
+    }
+
+    public void drive(double x, double y, double r) {
+        double theta = Math.atan2(y, x);
+        double pow = Math.hypot(x, y);
+
+        double xCom = pow * Math.cos(theta - Math.PI/4);
+        double yCom = pow * Math.sin(theta - Math.PI/4);
+        double max = Math.max(1, Math.abs(Math.max(Math.abs(xCom)+r, Math.abs(yCom)+r)));
+
+		group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r)/max, (xCom - r) / max})
+    }
+}
+```
+
+The method can be called by the opmode, and generally x and y are a single joystick's x and y axis (with y axis flipped) while turn is the difference between left and right triggers.
+
+Additional information about this class of drivetrain can be found at [Game Manual 0](https://gm0.org/en/latest/docs/common-mechanisms/drivetrains/holonomic.html).
+
+### Field Centric Drive
+
+Another advantage provided by using a holonomic/mecanum drivetrain is the ability to drive field centric, where the control axis are relative the the field instead of the robot. To do this, the direction of the robot needs to be found, generally through the robot [IMU](https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html) (which provides data about the orientation and forces on the robot).
+
+```java
+public class FieldCentricTeleOpDrive {
+    MotorGroup group;
+
+    public FieldCentricTeleOpDrive(HardwareMap hardwareMap) {
+    	// same as above
+    }
+
+    public void drive(double x, double y, double r) {
+        double theta = Math.atan2(y, x);
+        double pow = Math.hypot(x, y);
+
+        double xCom = pow * Math.cos(theta - Math.PI/4);
+        double yCom = pow * Math.sin(theta - Math.PI/4);
+        double max = Math.max(1, Math.abs(Math.max(Math.abs(xCom)+r, Math.abs(yCom)+r)));
+
+		group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r)/max, (xCom - r) / max})
+    }
+
+	public static double getAngle() {
+		// configure IMU first
+        double angles = imu.getRobotYawPitchRollAngles().getYaw();
+
+        double deltaAngle = angles - lastAngles;
+
+        if (deltaAngle < -180) deltaAngle += 360;
+        else if (deltaAngle > 180) deltaAngle -= 360;
+
+        direction += deltaAngle;
+        lastAngles = angles;
+
+        return direction;
+    }
+}
+```
