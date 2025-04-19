@@ -1,0 +1,134 @@
+---
+title: "Motor Groups"
+description: "Grouping motors together to execute equal or related functionality"
+---
+
+While there is a maximum of eight motors on a FTC-legal robot, often times more than one motor may be allocated to a task, like running the drivetrain or lift. For this purpose, it is often convient to call actions on several motors with varying parameters.
+
+A complete class can be written as follows
+
+```java
+package org.firstinspires.ftc.teamcode.utility;
+
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.function.Consumer;
+
+public class MotorGroup {
+    private final ArrayList<DcMotorEx> motors;
+
+    // Constructor from ArrayList
+    public MotorGroup(ArrayList<DcMotorEx> motors) {
+        this.motors = new ArrayList<>(motors);
+    }
+
+    // Constructor from array
+    public MotorGroup(DcMotorEx[] motorsArray) {
+        this.motors = new ArrayList<>();
+        this.motors.addAll(Arrays.asList(motorsArray));
+    }
+
+    public MotorGroup(HardwareMap hardwareMap, String prefix, String[] suffixes) {
+        this.motors = new ArrayList<>();
+        for (String suffix : suffixes) {
+            DcMotorEx motor = hardwareMap.get(DcMotorEx.class, prefix + suffix);
+            motors.add(motor);
+        }
+    }
+
+    public MotorGroup(HardwareMap hardwareMap, String[] motorNames) {
+        this.motors = new ArrayList<>();
+        for (String name : motorNames) {
+            DcMotorEx motor = hardwareMap.get(DcMotorEx.class, name);
+            motors.add(motor);
+        }
+    }
+
+    // Functional interfaces
+    public interface MotorAction1<T> {
+        void apply(DcMotorEx motor, T param);
+    }
+
+    public interface MotorAction2<T, U> {
+        void apply(DcMotorEx motor, T p1, U p2);
+    }
+
+    public interface MotorFunction1<T, R> {
+        R apply(DcMotorEx motor, T param);
+    }
+
+    public interface MotorFunction0<R> {
+        R apply(DcMotorEx motor);
+    }
+
+    // One param void
+    public <T> void run(MotorAction1<T> action, T[] paramArray) {
+        for (int i = 0; i < motors.size(); i++) {
+            action.apply(motors.get(i), paramArray[i % paramArray.length]);
+        }
+    }
+
+    // Two params void
+    public <T, U> void run(MotorAction2<T, U> action, T[] p1Array, U[] p2Array) {
+        for (int i = 0; i < motors.size(); i++) {
+            T p1 = p1Array[i % p1Array.length];
+            U p2 = p2Array[i % p2Array.length];
+            action.apply(motors.get(i), p1, p2);
+        }
+    }
+
+    // One param return
+    public <T, R> R[] runWithResult(MotorFunction1<T, R> function, T[] paramArray, Class<R> resultClass) {
+        @SuppressWarnings("unchecked")
+        R[] results = (R[]) Array.newInstance(resultClass, motors.size());
+        for (int i = 0; i < motors.size(); i++) {
+            results[i] = function.apply(motors.get(i), paramArray[i % paramArray.length]);
+        }
+        return results;
+    }
+
+    // Zero param return
+    public <R> R[] runWithResult(MotorFunction0<R> function, Class<R> resultClass) {
+        @SuppressWarnings("unchecked")
+        R[] results = (R[]) Array.newInstance(resultClass, motors.size());
+        for (int i = 0; i < motors.size(); i++) {
+            results[i] = function.apply(motors.get(i));
+        }
+        return results;
+    }
+
+    // One param, no mapping (e.g., lambda version)
+    public void run(Consumer<DcMotorEx> action) {
+        for (DcMotorEx motor : motors) {
+            action.accept(motor);
+        }
+    }
+
+    // Basic utility methods
+    public void add(DcMotorEx motor) {
+        motors.add(motor);
+    }
+
+    public void add(int index, DcMotorEx motor) {
+        motors.add(index, motor);
+    }
+
+    public void remove(int index) {
+        motors.remove(index);
+    }
+
+    public DcMotorEx get(int index) {
+        return motors.get(index);
+    }
+
+    public int size() {
+        return motors.size();
+    }
+}
+```
+
+At first glance, this may seem unnecessarily complicated, but this class provides very comphrehensive functionality and can easily be copied between codebases.
