@@ -21,12 +21,12 @@ import java.util.function.Consumer;
 public class MotorGroup {
     private final ArrayList<DcMotorEx> motors;
 
-    // Constructor from ArrayList
+    /* Constructors */
+
     public MotorGroup(ArrayList<DcMotorEx> motors) {
         this.motors = new ArrayList<>(motors);
     }
 
-    // Constructor from array
     public MotorGroup(DcMotorEx[] motorsArray) {
         this.motors = new ArrayList<>();
         this.motors.addAll(Arrays.asList(motorsArray));
@@ -48,7 +48,8 @@ public class MotorGroup {
         }
     }
 
-    // Functional interfaces
+    /* Functional interfaces */
+
     public interface MotorAction1<T> {
         void apply(DcMotorEx motor, T param);
     }
@@ -82,7 +83,7 @@ public class MotorGroup {
     }
 
     // One param return
-    public <T, R> R[] runWithResult(MotorFunction1<T, R> function, T[] paramArray, Class<R> resultClass) {
+    public <T, R> R[] run(MotorFunction1<T, R> function, T[] paramArray, Class<R> resultClass) {
         @SuppressWarnings("unchecked")
         R[] results = (R[]) Array.newInstance(resultClass, motors.size());
         for (int i = 0; i < motors.size(); i++) {
@@ -92,7 +93,7 @@ public class MotorGroup {
     }
 
     // Zero param return
-    public <R> R[] runWithResult(MotorFunction0<R> function, Class<R> resultClass) {
+    public <R> R[] run(MotorFunction0<R> function, Class<R> resultClass) {
         @SuppressWarnings("unchecked")
         R[] results = (R[]) Array.newInstance(resultClass, motors.size());
         for (int i = 0; i < motors.size(); i++) {
@@ -108,7 +109,8 @@ public class MotorGroup {
         }
     }
 
-    // Basic utility methods
+    /* Basic utility methods */
+
     public void add(DcMotorEx motor) {
         motors.add(motor);
     }
@@ -132,3 +134,53 @@ public class MotorGroup {
 ```
 
 At first glance, this may seem unnecessarily complicated, but this class provides very comphrehensive functionality and can easily be copied between codebases.
+
+Essentially, MotorGroup holds an ArrayList of DcMotorEx objects, which is created in three ways.
+
+<Info>
+  `DcMotorEx` is simply a enhanced version of `DcMotor`, which itself is a enhanced version of `DcMotorSimple`. For more information, see the [Javadoc](https://javadoc.io/doc/org.firstinspires.ftc/RobotCore/latest/com/qualcomm/robotcore/hardware/DcMotorEx.html)
+</Info>
+
+### Constructors
+
+```java
+public MotorGroup(ArrayList<DcMotorEx> motors) {
+   this.motors = new ArrayList<>(motors);
+}
+
+public MotorGroup(DcMotorEx[] motorsArray) {
+    this.motors = new ArrayList<>();
+    this.motors.addAll(Arrays.asList(motorsArray));
+}
+
+public MotorGroup(HardwareMap hardwareMap, String prefix, String[] suffixes) {
+    this.motors = new ArrayList<>();
+    for (String suffix : suffixes) {
+        DcMotorEx motor = hardwareMap.get(DcMotorEx.class, prefix + suffix);
+        motors.add(motor);
+    }
+}
+
+public MotorGroup(HardwareMap hardwareMap, String[] motorNames) {
+    this.motors = new ArrayList<>();
+    for (String name : motorNames) {
+        DcMotorEx motor = hardwareMap.get(DcMotorEx.class, name);
+        motors.add(motor);
+    }
+}
+```
+
+The four above constructors allow a few different ways of creating a motor group.
+
+1. Takes an ArrayList of DcMotorEx and sets the internal ArrayList to this value
+
+   ```java
+   ArrayList<DcMotorEx> motors = new ArrayList<>();
+   motors.add(hardwareMap.get(DcMotorEx.class, "motor_0"))
+   motors.add(hardwareMap.get(DcMotorEx.class, ""))
+   
+   MotorGroup m = new MotorGroup(motors);
+   ```
+2. Takes an array of DcMotorEx and converts it into an ArrayList
+3. Takes a HardwareMap from the opmode and uses it to fetch motors with a prefix and array of suffixes
+4. 

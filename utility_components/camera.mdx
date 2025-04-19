@@ -117,6 +117,64 @@ public class VisionPortalAprilTagLocalization extends LinearOpMode {
 
 For more information about April Tags, see the [wiki](https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/apriltag_intro/apriltag-intro.html) or [Javadoc](https://javadoc.io/doc/org.firstinspires.ftc/Vision/latest/org/firstinspires/ftc/vision/apriltag/package-summary.html).
 
+## Putting Together
+
+It can still be beneficial to have a dedicated Camera class with methods that can be called to initialize and run the Vision Portal. For example, the following is a modification of the April Tag localization code.
+
+```java
+public class CameraCode {
+	private Position cameraPosition ;
+    private YawPitchRollAngles cameraOrientation;
+	
+	private AprilTagProcessor aprilTag;
+	private VisionPortal visionPortal;
+
+	public CameraCode(Position cameraPosition, YawPitchRollAngles cameraOrientation) {
+		this.cameraPosition = cameraPosition;
+		this.cameraOrientation = cameraOrientation;
+	}
+
+	public CameraCode() {
+		Position cameraPosition = new Position(DistanceUnit.INCH, 0, 0, 0, 0);
+		YawPitchRollAngles cameraOrientation = new YawPitchRollAngles(AngleUnit.DEGREES, 0, -90, 0, 0);
+	}
+
+	public void init() {
+		aprilTag = new AprilTagProcessor.Builder()
+            .setCameraPose(cameraPosition, cameraOrientation)
+            .build();
+
+        VisionPortal.Builder builder = new VisionPortal.Builder();
+        builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        builder.addProcessor(aprilTag);
+        visionPortal = builder.build();
+
+	}
+
+	public void detect() {
+		List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+        telemetry.addData("# AprilTags Detected", currentDetections.size());
+
+        for (AprilTagDetection detection : currentDetections) {
+           	if (detection.metadata != null) {
+               	telemetry.addLine(String.format("\n---> (ID %d) %s", detection.id, detection.metadata.name));
+               	telemetry.addLine(String.format("X %6.1f\n Y %6.1f\nZ %6.1f  (in)",
+                    detection.robotPose.getPosition().x,
+                    detection.robotPose.getPosition().y,
+                    detection.robotPose.getPosition().z));
+             	telemetry.addLine(String.format("Pitch %6.1f\n Roll %6.1f\n Yaw %6.1f (deg)",
+					detection.robotPose.getOrientation().getPitch(AngleUnit.DEGREES),
+					detection.robotPose.getOrientation().getRoll(AngleUnit.DEGREES),
+					detection.robotPose.getOrientation().getYaw(AngleUnit.DEGREES)));
+            } else {
+               	telemetry.addLine(String.format("\n---> (ID %d) Unknown", detection.id));
+               	telemetry.addLine(String.format("Center %6.0f %6.0f   (px)", detection.center.x, detection.center.y));
+            }
+        }
+	}
+}
+```
+
 ## More CV Resources
 
 The official documentation for the FTC Robot Controller Vision Portal can be found [here](https://javadoc.io/doc/org.firstinspires.ftc/Vision/latest/org/firstinspires/ftc/vision/VisionPortal.html) and on the wiki [here](https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/visionportal_overview/visionportal-overview.html).
