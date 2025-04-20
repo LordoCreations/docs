@@ -20,7 +20,7 @@ MotorGroup group; // have motors alternating left side/right side
 public void init() {
 	// initialize motor groups
 
-	group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARDS, DcMotorSimple.Direction.REVERSE})
+	group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE});
 }
 
 @Override
@@ -31,7 +31,7 @@ public void loop() {
 	power[0] = Math.max(-gamepad1.left_stick_y + gamepad1.left_stick_x, 1);
 	power[1] = Math.max(-gamepad1.left_stick_y - gamepad1.left_stick_x, 1);
 
-	group.run(DcMotorEx::setPower, power)
+	group.run(DcMotorEx::setPower, power);
 }
 ```
 
@@ -54,7 +54,7 @@ public class TeleOpDrive {
     public TeleOpDrive(HardwareMap hardwareMap) {
     	// initialize motor group in order left-front, right-front, left-back, right-back
 		
-		group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARDS, DcMotorSimple.Direction.REVERSE})
+		group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE});
     }
 
     public void drive(double x, double y, double r) {
@@ -65,7 +65,7 @@ public class TeleOpDrive {
         double yCom = pow * Math.sin(theta - Math.PI/4);
         double max = Math.max(1, Math.abs(Math.max(Math.abs(xCom)+r, Math.abs(yCom)+r)));
 
-		group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r)/max, (xCom - r) / max})
+		group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r)/max, (xCom - r) / max});
     }
 }
 ```
@@ -76,40 +76,78 @@ Additional information about this class of drivetrain can be found at [Game Manu
 
 ### Field Centric Drive
 
+<img
+  className="block dark:hidden"
+  src="/images/field_centric_light.png"
+/>
+
+<img
+  className="hidden dark:block"
+  src="/images/field_centric_dark.png"
+/>
+
 Another advantage provided by using a holonomic/mecanum drivetrain is the ability to drive field centric, where the control axis are relative the the field instead of the robot. To do this, the direction of the robot needs to be found, generally through the robot [IMU](https://ftc-docs.firstinspires.org/en/latest/programming_resources/imu/imu.html) (which provides data about the orientation and forces on the robot).
 
 ```java
 public class FieldCentricTeleOpDrive {
     MotorGroup group;
+    public double direction;
+    private double lastAngle;
+    public IMU imu;
+    private double targetDirection = 0;
+
 
     public FieldCentricTeleOpDrive(HardwareMap hardwareMap) {
-    	// same as above
+        // initialize motor group in order left-front, right-front, left-back, right-back
+
+        group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE});
+
+        imu.initialize(
+                new IMU.Parameters(new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
+                        RevHubOrientationOnRobot.UsbFacingDirection.UP
+                ))
+        );
     }
 
     public void drive(double x, double y, double r) {
-        double theta = Math.atan2(y, x);
+        if(r != 0){ targetDirection = direction; }
+
+        r = ((getAngle() - targetDirection) / 40) + r;
+        r /= Math.max(1, Math.abs(r));
+
+
+        double theta = (Math.atan2(y, x) - Math.toRadians(direction));
         double pow = Math.hypot(x, y);
 
         double xCom = pow * Math.cos(theta - Math.PI/4);
         double yCom = pow * Math.sin(theta - Math.PI/4);
         double max = Math.max(1, Math.abs(Math.max(Math.abs(xCom)+r, Math.abs(yCom)+r)));
 
-		group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r)/max, (xCom - r) / max})
+        group.run(DcMotorEx::setPower, new Double[] {(xCom + r) / max, (yCom - r) / max, (yCom + r) / max, (xCom - r) / max});
     }
 
-	public static double getAngle() {
-		// configure IMU first
-        double angles = imu.getRobotYawPitchRollAngles().getYaw();
+    public double getAngle() {
+        // configure IMU first
+        double angle = imu.getRobotYawPitchRollAngles().getYaw();
 
-        double deltaAngle = angles - lastAngles;
+        double deltaAngle = angle - lastAngle;
 
         if (deltaAngle < -180) deltaAngle += 360;
         else if (deltaAngle > 180) deltaAngle -= 360;
 
         direction += deltaAngle;
-        lastAngles = angles;
+        lastAngle = angle;
 
         return direction;
     }
 }
 ```
+
+<Tip>
+  If it seems that the robot is overcorrecting or correcting too slowly, try modifying the following line with a smaller constant value (which is currently set to 40)
+
+  ```java
+  r = ((getAngle() - targetDirection) / 40) + r;
+  ```
+</Tip>
