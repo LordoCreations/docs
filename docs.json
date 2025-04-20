@@ -3,9 +3,9 @@
     "theme": "maple",
     "name": "MDSS Robotics Guide",
     "colors": {
-        "primary": "#16A34A",
-        "light": "#07C983",
-        "dark": "#15803D"
+        "primary": "#7049CE",
+        "light": "#9C73ED",
+        "dark": "#2E1962"
     },
     "favicon": "/favicon.svg",
     "navigation": {
