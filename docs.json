@@ -1,76 +1,88 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "maple",
-  "name": "MDSS Robotics Guide",
-  "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
-  },
-  "favicon": "/favicon.svg",
-  "navigation": {
-    "groups": [
-      {
-        "group": "Get Started",
-        "pages": [
-          "introduction",
-          "installation",
-          "setup"
-        ]
-      },
-      {
-        "group": "Basics",
-        "pages": [
-          "opmodes",
-          "structure",
-          "practices"
-        ]
-      },
-      {
-        "group": "Utility Components",
-        "pages": [
-          "utility_components/utility",
-          "utility_components/gamepad",
-          "utility_components/camera",
-          "utility_components/motor_group"
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "RoadRunner Documentation",
-          "href": "https://rr.brott.dev/docs",
-          "icon": "bird"
-        },
-        {
-          "anchor": "FTC Documentation",
-          "href": "https://ftc-docs.firstinspires.org/en/latest/",
-          "icon": "robot"
-        },
-        {
-          "anchor": "FTC JavaDoc",
-          "href": "https://javadoc.io/doc/org.firstinspires.ftc",
-          "icon": "book"
+    "$schema": "https://mintlify.com/docs.json",
+    "theme": "maple",
+    "name": "MDSS Robotics Guide",
+    "colors": {
+        "primary": "#16A34A",
+        "light": "#07C983",
+        "dark": "#15803D"
+    },
+    "favicon": "/favicon.svg",
+    "navigation": {
+        "groups": [
+            {
+                "group": "Get Started",
+                "pages": [
+                    "introduction",
+                    "installation",
+                    "setup"
+                ]
+            },
+            {
+                "group": "Basics",
+                "pages": [
+                    "opmodes",
+                    "structure",
+                    "practices"
+                ]
+            },
+            {
+                "group": "Utility Components",
+                "pages": [
+                    "utility_components/utility",
+                    "utility_components/gamepad",
+                    "utility_components/camera",
+                    "utility_components/motor_group"
+                ]
+            },
+            {
+                "group": "Hardware Components",
+                "pages": [
+                    "physical_components/basic_components",
+                    "physical_components/drivetrain"
+                ]
+            }
+        ],
+        "global": {
+            "anchors": [
+                {
+                    "anchor": "RoadRunner Documentation",
+                    "href": "https://rr.brott.dev/docs",
+                    "icon": "bird"
+                },
+                {
+                    "anchor": "FTC Documentation",
+                    "href": "https://ftc-docs.firstinspires.org/en/latest/",
+                    "icon": "robot"
+                },
+                {
+                    "anchor": "FTC JavaDoc",
+                    "href": "https://javadoc.io/doc/org.firstinspires.ftc",
+                    "icon": "book"
+                },
+                {
+                    "anchor": "Game Manual 0",
+                    "href": "https://gm0.org",
+                    "icon": "gamepad"
+                }
+            ]
         }
-      ]
+    },
+    "logo": {
+        "light": "/logo/light.svg",
+        "dark": "/logo/dark.svg"
+    },
+    "navbar": {
+        "links": [
+            {
+                "label": "Support",
+                "href": "mailto:mountdoug.rambots@gmail.com"
+            }
+        ]
+    },
+    "footer": {
+        "socials": {
+            "github": "https://github.com/MountDougRobotics"
+        }
     }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:mountdoug.rambots@gmail.com"
-      }
-    ]
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/MountDougRobotics"
-    }
-  }
 }

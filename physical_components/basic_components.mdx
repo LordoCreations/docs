@@ -1,0 +1,86 @@
+---
+title: "Basic Hardware Components"
+description: "A list of basic components and suggestions on how to implement them"
+---
+
+## Motor Components
+
+```java
+public class MotorComponent {
+	private MotorGroup group;
+
+	public MotorComponent(HardwareMap hardwareMap, String[] names) {
+		
+		// initialize motors (modify the following as needed)
+		group = new MotorGroup(hardwareMap, names);
+		group.run(DcMotorEx::setDirection, new DcMotorSimple.Direction[] {DcMotorSimple.Direction.FORWARD, DcMotorSimple.Direction.REVERSE});
+	}
+
+	public void setPower(double power) {
+		group.run(m -> m.setPower(power));
+	}
+
+	public Double[] getPower() {
+		return group.run(DcMotorEx::getPower, Double.class);
+	}
+}
+```
+
+### Slides
+
+Most FTC games require some form of linear motion, which usually appears in the form of slides. Generarlly, the programming of most forms of slides is basically the same, with a single or multiple motors spinning to retract or extend the slide. For information about specific types of slides, click [here](https://gm0.org/en/latest/docs/common-mechanisms/linear-motion-guide/index.html).
+
+### ![Viper Slides Pn](/images/viper_slides.png)
+
+Active Intake
+
+Active Intakes rely on some form of roller or spining mechanism to pick up game elements. In addition to using motors to spin these rollers, intakes often rely on accelerating the motors to a certain speed. This can be achieved by replacing `setPower()`  with `setVelocity()`  and filling in the other parameters.
+
+### ![Active Intake Pn](/images/active_intake.png)
+
+Additional Forms of Control
+
+In addition to setting motor power directory, other common forms of control include toggles (on/off). This can be achieved through a boolean that is flipped when an input is modified.
+
+```java
+boolean toggle, state;
+
+public void update(boolean state) {
+	if (state && !this.state) this.toggle = !this.toggle;
+	this.state = state;
+	
+	if (toggle) {
+		// do x
+	} else {
+		// do y
+	}
+}
+```
+
+## Servo Components
+
+Servos come in two forms depending on if they are continuos or not. While continuos servos act like motors (see [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/com/qualcomm/robotcore/hardware/CRServo)), normal Servos have a certain range of movement and can be set to an "exact" position (see [here](https://ftctechnh.github.io/ftc_app/doc/javadoc/index.html?com/qualcomm/robotcore/hardware/Servo.html)).
+
+```java
+public class ServoComponent {
+	private Servo servo;
+
+	public ServoComponent(HardwareMap hardwareMap, String name) {
+		Servo servo = hardwareMap.get(Servo.class, name);
+	}
+
+	public void setPosition(double pos) {
+		servo.setPostion(pos);
+	}
+
+	public double getPosition {
+		return servo.getPosition();
+	}
+
+	public void increment(double amount) {
+		setPosition(Math.min(Math.max(getPosition() + amount, servo.MIN_POSITION), servo.MAX_POSITION));
+	}
+}
+```
+
+Robot Claws and "Wrists" are the most common servo components, in which the former can occasionally involve multiple servos. While creating a ServoGroup class is possible, it would be rarely used. Generally, it would be preferable to create two servo objects that move in concert.

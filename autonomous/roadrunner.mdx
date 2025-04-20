@@ -1,0 +1,20 @@
+---
+title: "Roadrunner"
+description: "Using Roadrunner for FTC autonomous"
+---
+
+## Drivebase
+
+Roadrunner's original and prime function was to coordinate a robot's drivetrain to follow various paths using coordinates and various [splining](https://rr.brott.dev/docs/v1-0/guides/centerstage-auto/) and line movement.
+
+Before Roadrunner drivetrains can work, they need to be tuned so real life measurements are mirrored in the code. The official guide for tuning and installing Roadrunner can be found [here](https://rr.brott.dev/docs/v1-0/tuning/) and [here](https://rr.brott.dev/docs/v1-0/installation).
+
+<Tip>
+  Since FTC fields use Imperial measurements, it is generally better to stick with Roadrunner and FTC RC's default unit of **INCHES** for length
+</Tip>
+
+## Roadrunner Actions
+
+[Roadrunner 1.0](https://rr.brott.dev/docs/v1-0) introduces Actions, which are managed through Roadrunner and can be executed in parallel and sequence with other actions and robot movement.
+
+See [this page](https://mdssrobotics.mintlify.app/structure) for an example of creating components with Roadrunner actions, or [here](https://rr.brott.dev/docs/v1-0/guides/centerstage-auto/) for a full example for FTC 2023-24 Centerstage.
