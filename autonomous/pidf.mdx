@@ -1,0 +1,18 @@
+---
+title: "Non-Drivetrain Control"
+description: "Autonomous control of non-drivetrain components"
+---
+
+## Encoders
+
+[Encoders](https://gm0.org/en/latest/docs/software/tutorials/encoders.html) are sensors that detect movement and return them as ticks, often at a certain many ticks per revolution. Oftentimes, it is better to use encoders to get more reproducible movement in components. For example, having presets can allow slides to move to certain positions in both Autonomous and TeleOp periods.
+
+Encoders can be attached to motors, but to combat slippage it is often wise to have [dead wheels](https://gm0.org/en/latest/docs/common-mechanisms/dead-wheels.html), which are freespinning wheels attached to an encoder. Doing this allows the encoder to track how far the actual component has moved, compared to the amount of revolutions the motor has.
+
+## PID Control
+
+While Roadrunner handles most of the control behind tuning a drivetrain, it can also be beneficial to tune motors so movements are done in a more controlled and precise fashion. 
+
+This can be done with PID control, which stands for Propotional, Integral, and Derivative. While it sounds complicated, nailing things down can greatly improve performance, especially in cases where motors are under heavy loads.
+
+The [FTCLib](https://docs.ftclib.org/ftclib/features/controllers) library provides a comphrehensive overview of PID, and also includes some useful tools that can be [incorporated](https://docs.ftclib.org/ftclib/features/controllers) as necessary.

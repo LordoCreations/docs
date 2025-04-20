@@ -41,6 +41,19 @@
                     "physical_components/basic_components",
                     "physical_components/drivetrain"
                 ]
+            },
+            {
+                "group": "Autonomous",
+                "pages": [
+                    "autonomous/roadrunner",
+                    "autonomous/pidf"
+                ]
+            },
+            {
+                "group": "Miscellaneous",
+                "pages": [
+                    "misc/sensors"
+                ]
             }
         ],
         "global": {
