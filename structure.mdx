@@ -145,16 +145,10 @@ public class Common {
 ```java TeleOP.java
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.Common;
 // other imports
 
 public class TeleOP extends OpMode {
-    private DcMotor frontLeft;
-    private DcMotor backLeft;
-    private DcMotor frontRight;
-    private DcMotor backRight;
-	private DcMotor teleMotor;
-
     @Override
     public void init() {
         Common.initialize(hardwareMap);
@@ -173,7 +167,7 @@ public class TeleOP extends OpMode {
 ```java Auton.java
 package org.firstinspires.ftc.teamcode;
 
-import org.firstinspires.ftc.teamcode.Config;
+import org.firstinspires.ftc.teamcode.Common;
 // other imports
 
 public class Auton extends LinearOpMode {
