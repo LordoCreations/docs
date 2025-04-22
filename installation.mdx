@@ -6,19 +6,19 @@ mode: "wide"
 
 <Tabs>
   <Tab title="Github">
+    
+
     ## Github
 
     Github is a software versioning and management tool that enables easy collaboration and code base design.
 
-    1. Go to the[ FTC Robot Controller](https://github.com/FIRST-Tech-Challenge/FtcRobotController) and press "Fork"&#x20;
+    1. Go to the[ FTC Robot Controller](https://github.com/FIRST-Tech-Challenge/FtcRobotController) and press "Fork" 
 
-       ![](/images/ftc_repo.png "https://github.com/FIRST-Tech-Challenge/FtcRobotController")
-
+       ![](/images/ftc_repo.png)
     2. To share the repository with collaborators, go into the new repository, press "Settings", "Collaborators and teams", and add people or teams
 
        ![](/images/share_repo.png)
   </Tab>
-
   <Tab title="Android Studio">
     ## Android Studio
 
@@ -26,58 +26,54 @@ mode: "wide"
 
     1. Go to [Android Studio](https://developer.android.com/studio) and install the latest version for your operating system
 
-           <Note>
-             If you can't install in Program Files or Applications due to permissions, try installing in less restricted folder like your User folder or Documents
-           </Note>
-
+       <Note>
+         If you can't install in Program Files or Applications due to permissions, try installing in less restricted folder like your User folder or Documents
+       </Note>
     2. Once installed, run the app and press "Clone Repository"
 
        ![](/images/clone_repo.png)
-
     3. Install Git if needed (and restart Android Studio)
-
     4. Select "Github" and the name of the repository you forked
-
     5. If prompted, press "Trust Project"
-
     6. Go to Settings, "Build, Execution, Development", "Build Tools", "Gradle" and change the Gradle JDK to Java 17; press "OK" to confirm
 
-           <Note>
-             If needed, install Java 17 by pressing "Download JDK" and selecting Version 17
+       <Note>
+         If needed, install Java 17 by pressing "Download JDK" and selecting Version 17
 
-             ![](/images/version_17.png)
-           </Note>
-
+         ![](/images/version_17.png)
+       </Note>
        ![](/images/change_jdk.png)
-
     7. To boot programs onto the robot, ensure the robot is either connected to the computer via USB cable or wifi using [ADB WiFi](#adb_wifi), ensure "TeamCode" is selected on the top bar and press the "Run" or "Restart" button
 
        ![](/images/run_androids.png)
 
-       <Info>A disadvantage of using Android Studio to boot code onto the robot is that it can take a long time --- expect times ranging from 30 seconds to 2 minutes</Info>
+       <Info>
+         A disadvantage of using Android Studio to boot code onto the robot is that it can take a long time --- expect times ranging from 30 seconds to 2 minutes
+       </Info>
   </Tab>
-
   <Tab title="ADB WiFi">
-    ## <span id="adb_wifi">ADB WiFi</span>
+    ## <span id="adb_wifi">
+      ADB WiFi
+    </span>
 
     ADB WiFi is a extension that allows you to connect to the Robot Control Hub over WiFi.
 
     1. Go to Settings, "Plugins" and search "ADB Wi-Fi" and Install. Once completed, press "OK"
 
        ![](/images/adb_wifi.png)
-
-    2. To use ADB WiFi, connect to the robot's WiFi network before selecting the WiFi icon on the right bar and selecting connect to the Robot Controller&#x20;
+    2. To use ADB WiFi, connect to the robot's WiFi network before selecting the WiFi icon on the right bar and selecting connect to the Robot Controller 
 
        ![](/images/adb_wifi_use.png)
 
-           <Note>
-             Sometimes, you may need to plug in your computer to the Robot Controller before the device can be connected to via WiFi. Additionally, you may also have to do the first install each time you open the app on another WiFi network to download necessary imports and libraries.
-           </Note>
+       <Note>
+         Sometimes, you may need to plug in your computer to the Robot Controller before the device can be connected to via WiFi. Additionally, you may also have to do the first install each time you open the app on another WiFi network to download necessary imports and libraries.
+       </Note>
   </Tab>
-
   <Tab title="Roadrunner">
     ## Roadrunner
 
     Roadrunner is a robot localization, path following, and action library designed for Autonomous period robot control.
   </Tab>
 </Tabs>
+
+Installation instructions can be found [here](https://rr.brott.dev/docs/v1-0/installation/).
